@@ -44,7 +44,7 @@ export default function Home() {
       {/* Header - compact */}
       <div className="flex items-center justify-between px-4 py-2 bg-white border-b shadow-sm">
         <div className="flex items-center gap-4">
-          <h1 className="text-lg font-bold">DS2 アサイン</h1>
+          <h1 className="text-lg font-bold">DS2アサイン丸わかりマン</h1>
           {/* View toggle */}
           <div className="flex bg-gray-200 rounded-lg p-0.5 text-sm">
             <button
@@ -66,7 +66,7 @@ export default function Home() {
           </div>
         </div>
         <div className="flex items-center gap-3">
-          {!loading && <AlertBadges members={members} months={months} />}
+          {!loading && viewMode === "member" && <AlertBadges members={members} months={months} />}
           <button
             onClick={fetchData}
             disabled={loading}
