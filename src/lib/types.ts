@@ -49,7 +49,7 @@ export const DS2_MEMBERS: Record<string, { team: "GL" | "A" | "B" | "C*"; nameVa
   "本馬 佳賢": { team: "A", nameVariants: ["本馬佳賢", "本馬 佳賢"] },
   "野澤 和輝": { team: "B", nameVariants: ["野澤和輝", "野澤 和輝"] },
   "浅井 海図": { team: "B", nameVariants: ["浅井海図", "浅井 海図"] },
-  "髙橋 圭太": { team: "B", nameVariants: ["髙橋圭太", "髙橋 圭太", "高橋圭太", "高橋 圭太"] },
+  "髙橋 奎太": { team: "B", nameVariants: ["髙橋奎太", "髙橋 奎太", "高橋奎太", "高橋 奎太", "髙橋圭太", "髙橋 圭太", "高橋圭太", "高橋 圭太", "高橋敬多"] },
   "岩田 迪也": { team: "B", nameVariants: ["岩田迪也", "岩田 迪也"] },
   "水口 和也": { team: "C*", nameVariants: ["水口和也", "水口 和也"] },
   "藤田 直樹": { team: "C*", nameVariants: ["藤田直樹", "藤田 直樹"] },
