@@ -8,11 +8,20 @@ import ProjectView from "@/components/ProjectView";
 type ViewMode = "member" | "project";
 
 export default function Home() {
+  const [authenticated, setAuthenticated] = useState(false);
+  const [password, setPassword] = useState("");
+  const [authError, setAuthError] = useState(false);
   const [members, setMembers] = useState<MemberAssignment[]>([]);
   const [projects, setProjects] = useState<ProjectInfo[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<ViewMode>("member");
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && sessionStorage.getItem("ds2_auth") === "true") {
+      setAuthenticated(true);
+    }
+  }, []);
 
   const fetchData = useCallback(async () => {
     setLoading(true);
@@ -38,6 +47,43 @@ export default function Home() {
   }, [fetchData]);
 
   const months = generateMonths(13);
+
+  const handleLogin = () => {
+    if (password === "DS2") {
+      setAuthenticated(true);
+      setAuthError(false);
+      sessionStorage.setItem("ds2_auth", "true");
+    } else {
+      setAuthError(true);
+    }
+  };
+
+  if (!authenticated) {
+    return (
+      <main className="h-screen flex items-center justify-center bg-gray-100">
+        <div className="bg-white p-8 rounded-lg shadow-md w-80">
+          <h1 className="text-lg font-bold mb-4 text-center">DS2アサイン丸わかりマン</h1>
+          <form onSubmit={(e) => { e.preventDefault(); handleLogin(); }}>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="パスワード"
+              className="w-full border rounded px-3 py-2 mb-3 text-sm"
+              autoFocus
+            />
+            {authError && <p className="text-red-600 text-xs mb-2">パスワードが違います</p>}
+            <button
+              type="submit"
+              className="w-full bg-blue-600 text-white rounded py-2 text-sm hover:bg-blue-700"
+            >
+              ログイン
+            </button>
+          </form>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main className="h-screen flex flex-col overflow-hidden">
