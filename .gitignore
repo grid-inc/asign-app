@@ -3,3 +3,4 @@ node_modules/
 .env.local
 token.env
 *.env
+.vercel
