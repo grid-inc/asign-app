@@ -7,6 +7,7 @@ const CAPACITY = 160;
 
 const TYPE_COLORS: Record<string, string> = {
   "本開発": "#3b82f6",
+  "保守": "#8b5cf6",
   "先行着手（内示なし）": "#f59e0b",
   "プリセ": "#10b981",
   "社内": "#9ca3af",
@@ -132,7 +133,7 @@ export default function MemberView({ data, months }: MemberViewProps) {
                           <div className="flex flex-col items-center gap-0.5">
                             {/* Stacked bar */}
                             <div className="w-full h-4 flex rounded overflow-hidden bg-gray-100">
-                              {["先行着手（内示なし）", "プリセ", "本開発", "社内"].map((type) => {
+                              {["先行着手（内示なし）", "プリセ", "本開発", "保守", "社内"].map((type) => {
                                 const h = typeBreakdown.get(type) || 0;
                                 if (h === 0) return null;
                                 const pct = (h / Math.max(total, CAPACITY)) * 100;

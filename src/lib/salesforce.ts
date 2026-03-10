@@ -192,11 +192,12 @@ export async function fetchDS2Data(): Promise<{
       monthlyHours.sort((a, b) => a.month.localeCompare(b.month));
       const projRecord = data.projectId ? projectMap.get(data.projectId) : null;
       const customerName = projRecord?.ExportAccount__c || "";
-      projects.push({ projectName, customerName, manHoursType: data.type, monthlyHours });
+      const manHoursType = (data.type === "本開発" && projectName.includes("保守")) ? "保守" : data.type;
+      projects.push({ projectName, customerName, manHoursType, monthlyHours });
     }
 
     projects.sort((a, b) => {
-      const order = ["本開発", "先行着手（内示なし）", "プリセ", "社内"];
+      const order = ["本開発", "保守", "先行着手（内示なし）", "プリセ", "社内"];
       return order.indexOf(a.manHoursType) - order.indexOf(b.manHoursType);
     });
 
@@ -251,7 +252,8 @@ export async function fetchDS2Data(): Promise<{
           monthlyHours.push({ month, hours: Math.round(hours * 10) / 10 });
         }
         monthlyHours.sort((a, b) => a.month.localeCompare(b.month));
-        membersList.push({ memberName, team: mData.team, manHoursType: type, monthlyHours });
+        const manHoursType = (type === "本開発" && projName.includes("保守")) ? "保守" : type;
+        membersList.push({ memberName, team: mData.team, manHoursType, monthlyHours });
       }
     }
 
