@@ -161,7 +161,7 @@ export async function fetchDS2Data(): Promise<{
   );
 
   // --- Build Member-centric view ---
-  const memberDataMap = new Map<string, Map<string, { type: string; months: Map<string, number> }>>();
+  const memberDataMap = new Map<string, Map<string, { type: string; projectId: string | null; months: Map<string, number> }>>();
 
   for (const rec of filteredRecords) {
     const info = nameToInfo[rec.UserName__c];
@@ -172,7 +172,7 @@ export async function fetchDS2Data(): Promise<{
     const projMap = memberDataMap.get(canonical)!;
     const key = `${rec.ExportProject__c}|${rec.ManHoursType__c}`;
 
-    if (!projMap.has(key)) projMap.set(key, { type: rec.ManHoursType__c, months: new Map() });
+    if (!projMap.has(key)) projMap.set(key, { type: rec.ManHoursType__c, projectId: rec.Project__c || null, months: new Map() });
     const proj = projMap.get(key)!;
     const monthKey = rec.CostOccurrenceMonth__c.substring(0, 7);
     proj.months.set(monthKey, (proj.months.get(monthKey) || 0) + rec.ManHoursTime__c);
@@ -190,7 +190,9 @@ export async function fetchDS2Data(): Promise<{
         monthlyHours.push({ month, hours: Math.round(hours * 10) / 10 });
       }
       monthlyHours.sort((a, b) => a.month.localeCompare(b.month));
-      projects.push({ projectName, customerName: "", manHoursType: data.type, monthlyHours });
+      const projRecord = data.projectId ? projectMap.get(data.projectId) : null;
+      const customerName = projRecord?.ExportAccount__c || "";
+      projects.push({ projectName, customerName, manHoursType: data.type, monthlyHours });
     }
 
     projects.sort((a, b) => {
