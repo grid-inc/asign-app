@@ -84,8 +84,8 @@ function getDateRange() {
   };
 }
 
-function buildNameMapping(): Record<string, { canonical: string; team: "A" | "B" | "C*" }> {
-  const map: Record<string, { canonical: string; team: "A" | "B" | "C*" }> = {};
+function buildNameMapping(): Record<string, { canonical: string; team: "GL" | "A" | "B" | "C*" }> {
+  const map: Record<string, { canonical: string; team: "GL" | "A" | "B" | "C*" }> = {};
   for (const [canonical, { team, nameVariants }] of Object.entries(DS2_MEMBERS)) {
     for (const variant of nameVariants) {
       map[variant] = { canonical, team };
@@ -203,16 +203,19 @@ export async function fetchDS2Data(): Promise<{
     members.push({ memberName, team: memberInfo.team, projects });
   }
 
+  const teamOrder = ["GL", "A", "B", "C*"];
+  const memberKeys = Object.keys(DS2_MEMBERS);
   members.sort((a, b) => {
-    if (a.team !== b.team) return a.team.localeCompare(b.team);
-    return a.memberName.localeCompare(b.memberName);
+    const teamDiff = teamOrder.indexOf(a.team) - teamOrder.indexOf(b.team);
+    if (teamDiff !== 0) return teamDiff;
+    return memberKeys.indexOf(a.memberName) - memberKeys.indexOf(b.memberName);
   });
 
   // --- Build Project-centric view ---
   // Group by project name -> member -> monthly hours
   const projDataMap = new Map<string, {
     projectId: string;
-    members: Map<string, { team: "A" | "B" | "C*"; types: Map<string, Map<string, number>> }>;
+    members: Map<string, { team: "GL" | "A" | "B" | "C*"; types: Map<string, Map<string, number>> }>;
   }>();
 
   for (const rec of filteredRecords) {
