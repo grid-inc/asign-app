@@ -13,7 +13,7 @@ const TYPE_COLORS: Record<string, string> = {
 const TEAM_BADGE: Record<string, string> = {
   "A": "bg-blue-100 text-blue-700",
   "B": "bg-green-100 text-green-700",
-  "C*": "bg-purple-100 text-purple-700",
+  "C": "bg-purple-100 text-purple-700",
 };
 
 interface ProjectViewProps {
