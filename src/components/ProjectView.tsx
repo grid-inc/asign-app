@@ -4,10 +4,10 @@ import { useState, useMemo } from "react";
 import type { ProjectInfo } from "@/lib/types";
 
 const TYPE_COLORS: Record<string, string> = {
+  "プリセ": "#10b981",
+  "先行着手（内示なし）": "#f59e0b",
   "本開発": "#3b82f6",
   "保守": "#8b5cf6",
-  "先行着手（内示なし）": "#f59e0b",
-  "プリセ": "#10b981",
   "社内": "#9ca3af",
 };
 
