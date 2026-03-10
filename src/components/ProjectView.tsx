@@ -166,7 +166,7 @@ export default function ProjectView({ projects, months }: ProjectViewProps) {
                         {total > 0 && typeMap ? (
                           <div className="flex flex-col items-center gap-0.5">
                             <div className="w-full h-3 flex rounded overflow-hidden">
-                              {["先行着手（内示なし）", "プリセ", "本開発", "社内"].map((type) => {
+                              {["先行着手（内示なし）", "プリセ", "本開発", "保守", "社内"].map((type) => {
                                 const h = typeMap.get(type) || 0;
                                 if (h === 0) return null;
                                 const pct = (h / total) * 100;
