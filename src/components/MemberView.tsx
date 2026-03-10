@@ -19,9 +19,23 @@ interface MemberViewProps {
 
 export default function MemberView({ data, months }: MemberViewProps) {
   const [expandedMember, setExpandedMember] = useState<string | null>(null);
+  const [selectedMembers, setSelectedMembers] = useState<Set<string>>(new Set(data.map(m => m.memberName)));
+  const [showFilter, setShowFilter] = useState(false);
+
+  const toggleMember = (name: string) => {
+    setSelectedMembers(prev => {
+      const next = new Set(prev);
+      if (next.has(name)) next.delete(name);
+      else next.add(name);
+      return next;
+    });
+  };
+
+  const selectAll = () => setSelectedMembers(new Set(data.map(m => m.memberName)));
+  const deselectAll = () => setSelectedMembers(new Set());
 
   const memberSummaries = useMemo(() => {
-    return data.map((member) => {
+    return data.filter(m => selectedMembers.has(m.memberName)).map((member) => {
       const monthTotals = new Map<string, number>();
       const monthByType = new Map<string, Map<string, number>>();
 
@@ -36,10 +50,51 @@ export default function MemberView({ data, months }: MemberViewProps) {
 
       return { member, monthTotals, monthByType };
     });
+  }, [data, selectedMembers]);
+
+  // Group members by team for filter display
+  const membersByTeam = useMemo(() => {
+    const teams = new Map<string, string[]>();
+    data.forEach(m => {
+      if (!teams.has(m.team)) teams.set(m.team, []);
+      teams.get(m.team)!.push(m.memberName);
+    });
+    return teams;
   }, [data]);
 
   return (
     <div>
+      {/* Member filter */}
+      <div className="px-2 py-1 border-b bg-white flex items-center gap-2 text-xs">
+        <button
+          onClick={() => setShowFilter(!showFilter)}
+          className="px-2 py-0.5 border rounded hover:bg-gray-100 text-[11px]"
+        >
+          メンバー絞込 ({selectedMembers.size}/{data.length})
+        </button>
+        {showFilter && (
+          <div className="flex items-center gap-3 flex-wrap">
+            <button onClick={selectAll} className="text-blue-600 hover:underline text-[10px]">全選択</button>
+            <button onClick={deselectAll} className="text-blue-600 hover:underline text-[10px]">全解除</button>
+            {Array.from(membersByTeam.entries()).map(([team, members]) => (
+              <span key={team} className="flex items-center gap-1">
+                <span className="text-gray-500 font-bold text-[10px]">{team}:</span>
+                {members.map(name => (
+                  <label key={name} className="flex items-center gap-0.5 cursor-pointer text-[10px]">
+                    <input
+                      type="checkbox"
+                      checked={selectedMembers.has(name)}
+                      onChange={() => toggleMember(name)}
+                      className="w-3 h-3"
+                    />
+                    {name.split(" ")[0]}
+                  </label>
+                ))}
+              </span>
+            ))}
+          </div>
+        )}
+      </div>
       <table className="w-full border-collapse text-xs">
         <thead>
           <tr className="bg-gray-800 text-white">
@@ -119,8 +174,8 @@ export default function MemberView({ data, months }: MemberViewProps) {
                           className="inline-block w-2 h-2 rounded-full flex-shrink-0"
                           style={{ backgroundColor: TYPE_COLORS[proj.manHoursType] || "#ccc" }}
                         />
-                        <span className="truncate text-[10px]" title={proj.projectName}>
-                          {proj.projectName}
+                        <span className="truncate text-[10px]" title={`${proj.customerName}-${proj.projectName}`}>
+                          {proj.customerName}-{proj.projectName}
                         </span>
                       </div>
                     </td>
