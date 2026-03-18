@@ -105,7 +105,7 @@ export async function fetchDS2Data(): Promise<{
   const allNames = Object.values(DS2_MEMBERS).flatMap((m) => m.nameVariants);
   const nameCondition = allNames.map((n) => `'${n}'`).join(",");
 
-  // Query ManHours with Project reference
+  // Query ManHours with Project reference (見通し)
   const manHoursRecords: ManHoursRecord[] = await queryAll(conn, `
     SELECT UserName__c, ExportProject__c, CostOccurrenceMonth__c,
            ManHoursTime__c, ManHoursType__c, WorkType__c, Project__c
@@ -113,6 +113,20 @@ export async function fetchDS2Data(): Promise<{
     WHERE UserName__c IN (${nameCondition})
       AND RecordTypeId = '${RECORD_TYPE_FORECAST}'
       AND ForecastAchievement__c = '見通し'
+      AND CostOccurrenceMonth__c >= ${startStr}
+      AND CostOccurrenceMonth__c <= ${endStr}
+      AND ManHoursTime__c > 0
+    ORDER BY UserName__c, ExportProject__c, CostOccurrenceMonth__c
+  `);
+
+  // Query ManHours (実績)
+  const actualRecords: ManHoursRecord[] = await queryAll(conn, `
+    SELECT UserName__c, ExportProject__c, CostOccurrenceMonth__c,
+           ManHoursTime__c, ManHoursType__c, WorkType__c, Project__c
+    FROM ManHours__c
+    WHERE UserName__c IN (${nameCondition})
+      AND RecordTypeId = '${RECORD_TYPE_FORECAST}'
+      AND ForecastAchievement__c = '実績'
       AND CostOccurrenceMonth__c >= ${startStr}
       AND CostOccurrenceMonth__c <= ${endStr}
       AND ManHoursTime__c > 0
@@ -160,8 +174,13 @@ export async function fetchDS2Data(): Promise<{
     (rec: ManHoursRecord) => !rec.Project__c || !excludedProjectIds.has(rec.Project__c)
   );
 
+  // Filter actual records for excluded projects
+  const filteredActualRecords = actualRecords.filter(
+    (rec: ManHoursRecord) => !rec.Project__c || !excludedProjectIds.has(rec.Project__c)
+  );
+
   // --- Build Member-centric view ---
-  const memberDataMap = new Map<string, Map<string, { type: string; projectId: string | null; months: Map<string, number> }>>();
+  const memberDataMap = new Map<string, Map<string, { type: string; projectId: string | null; months: Map<string, number>; actualMonths: Map<string, number> }>>();
 
   for (const rec of filteredRecords) {
     const info = nameToInfo[rec.UserName__c];
@@ -172,10 +191,26 @@ export async function fetchDS2Data(): Promise<{
     const projMap = memberDataMap.get(canonical)!;
     const key = `${rec.ExportProject__c}|${rec.ManHoursType__c}`;
 
-    if (!projMap.has(key)) projMap.set(key, { type: rec.ManHoursType__c, projectId: rec.Project__c || null, months: new Map() });
+    if (!projMap.has(key)) projMap.set(key, { type: rec.ManHoursType__c, projectId: rec.Project__c || null, months: new Map(), actualMonths: new Map() });
     const proj = projMap.get(key)!;
     const monthKey = rec.CostOccurrenceMonth__c.substring(0, 7);
     proj.months.set(monthKey, (proj.months.get(monthKey) || 0) + rec.ManHoursTime__c);
+  }
+
+  // Add actual data to member data map
+  for (const rec of filteredActualRecords) {
+    const info = nameToInfo[rec.UserName__c];
+    if (!info) continue;
+    const { canonical } = info;
+
+    if (!memberDataMap.has(canonical)) memberDataMap.set(canonical, new Map());
+    const projMap = memberDataMap.get(canonical)!;
+    const key = `${rec.ExportProject__c}|${rec.ManHoursType__c}`;
+
+    if (!projMap.has(key)) projMap.set(key, { type: rec.ManHoursType__c, projectId: rec.Project__c || null, months: new Map(), actualMonths: new Map() });
+    const proj = projMap.get(key)!;
+    const monthKey = rec.CostOccurrenceMonth__c.substring(0, 7);
+    proj.actualMonths.set(monthKey, (proj.actualMonths.get(monthKey) || 0) + rec.ManHoursTime__c);
   }
 
   const members: MemberAssignment[] = [];
@@ -186,8 +221,11 @@ export async function fetchDS2Data(): Promise<{
     for (const [projectKey, data] of projMap) {
       const [projectName] = projectKey.split("|");
       const monthlyHours: MonthlyHour[] = [];
-      for (const [month, hours] of data.months) {
-        monthlyHours.push({ month, hours: Math.round(hours * 10) / 10 });
+      const allMonths = new Set([...data.months.keys(), ...data.actualMonths.keys()]);
+      for (const month of allMonths) {
+        const hours = data.months.get(month) || 0;
+        const actualHours = data.actualMonths.get(month);
+        monthlyHours.push({ month, hours: Math.round(hours * 10) / 10, actualHours: actualHours !== undefined ? Math.round(actualHours * 10) / 10 : undefined });
       }
       monthlyHours.sort((a, b) => a.month.localeCompare(b.month));
       const projRecord = data.projectId ? projectMap.get(data.projectId) : null;

@@ -14,6 +14,7 @@ export interface ProjectAssignment {
 export interface MonthlyHour {
   month: string; // "2026-03" format
   hours: number;
+  actualHours?: number; // 実績
 }
 
 // Project-centric view

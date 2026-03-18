@@ -13,6 +13,8 @@ const TYPE_COLORS: Record<string, string> = {
   "社内": "#9ca3af",
 };
 
+type DisplayMode = "forecast" | "actual_forecast";
+
 interface MemberViewProps {
   data: MemberAssignment[];
   months: string[];
@@ -22,6 +24,7 @@ export default function MemberView({ data, months }: MemberViewProps) {
   const [expandedMember, setExpandedMember] = useState<string | null>(null);
   const [selectedMembers, setSelectedMembers] = useState<Set<string>>(new Set(data.map(m => m.memberName)));
   const [showFilter, setShowFilter] = useState(false);
+  const [displayMode, setDisplayMode] = useState<DisplayMode>("forecast");
 
   const toggleMember = (name: string) => {
     setSelectedMembers(prev => {
@@ -38,18 +41,22 @@ export default function MemberView({ data, months }: MemberViewProps) {
   const memberSummaries = useMemo(() => {
     return data.filter(m => selectedMembers.has(m.memberName)).map((member) => {
       const monthTotals = new Map<string, number>();
+      const monthActualTotals = new Map<string, number>();
       const monthByType = new Map<string, Map<string, number>>();
 
       member.projects.forEach((p) => {
         p.monthlyHours.forEach((mh) => {
           monthTotals.set(mh.month, (monthTotals.get(mh.month) || 0) + mh.hours);
+          if (mh.actualHours !== undefined) {
+            monthActualTotals.set(mh.month, (monthActualTotals.get(mh.month) || 0) + mh.actualHours);
+          }
           if (!monthByType.has(mh.month)) monthByType.set(mh.month, new Map());
           const typeMap = monthByType.get(mh.month)!;
           typeMap.set(p.manHoursType, (typeMap.get(p.manHoursType) || 0) + mh.hours);
         });
       });
 
-      return { member, monthTotals, monthByType };
+      return { member, monthTotals, monthActualTotals, monthByType };
     });
   }, [data, selectedMembers]);
 
@@ -65,7 +72,7 @@ export default function MemberView({ data, months }: MemberViewProps) {
 
   return (
     <div>
-      {/* Member filter */}
+      {/* Toolbar */}
       <div className="px-2 py-1 border-b bg-white flex items-center gap-2 text-xs">
         <button
           onClick={() => setShowFilter(!showFilter)}
@@ -73,6 +80,20 @@ export default function MemberView({ data, months }: MemberViewProps) {
         >
           メンバー絞込 ({selectedMembers.size}/{data.length})
         </button>
+        <div className="flex bg-gray-200 rounded p-0.5 text-[10px]">
+          <button
+            onClick={() => setDisplayMode("forecast")}
+            className={`px-2 py-0.5 rounded transition ${displayMode === "forecast" ? "bg-white shadow font-medium" : "text-gray-600"}`}
+          >
+            見通し
+          </button>
+          <button
+            onClick={() => setDisplayMode("actual_forecast")}
+            className={`px-2 py-0.5 rounded transition ${displayMode === "actual_forecast" ? "bg-white shadow font-medium" : "text-gray-600"}`}
+          >
+            実績/見通し
+          </button>
+        </div>
         {showFilter && (
           <div className="flex items-center gap-3 flex-wrap">
             <button onClick={selectAll} className="text-blue-600 hover:underline text-[10px]">全選択</button>
@@ -107,7 +128,7 @@ export default function MemberView({ data, months }: MemberViewProps) {
           </tr>
         </thead>
         <tbody>
-          {memberSummaries.map(({ member, monthTotals, monthByType }) => {
+          {memberSummaries.map(({ member, monthTotals, monthActualTotals, monthByType }) => {
             const isExpanded = expandedMember === member.memberName;
             return (
               <>
@@ -126,6 +147,7 @@ export default function MemberView({ data, months }: MemberViewProps) {
                   </td>
                   {months.map((month) => {
                     const total = Math.round(monthTotals.get(month) || 0);
+                    const actualTotal = monthActualTotals.has(month) ? Math.round(monthActualTotals.get(month)!) : undefined;
                     const typeBreakdown = monthByType.get(month) || new Map();
                     return (
                       <td key={month} className="px-1 py-1 border-r">
@@ -149,7 +171,10 @@ export default function MemberView({ data, months }: MemberViewProps) {
                             <span className={`text-[10px] font-bold ${
                               total > CAPACITY ? "text-red-600" : total < 140 && total > 0 ? "text-blue-600" : total === 0 ? "text-gray-300" : "text-gray-700"
                             }`}>
-                              {total}h
+                              {displayMode === "actual_forecast"
+                                ? `${actualTotal !== undefined ? actualTotal : "-"}h/${total}h`
+                                : `${total}h`
+                              }
                             </span>
                           </div>
                         ) : (
@@ -181,10 +206,20 @@ export default function MemberView({ data, months }: MemberViewProps) {
                       </div>
                     </td>
                     {months.map((month) => {
-                      const h = proj.monthlyHours.find((mh) => mh.month === month)?.hours || 0;
+                      const mh = proj.monthlyHours.find((mh) => mh.month === month);
+                      const h = mh?.hours || 0;
+                      const ah = mh?.actualHours;
                       return (
                         <td key={month} className="px-1 py-0.5 text-center text-[10px] border-r">
-                          {h > 0 ? <span className="text-gray-600">{h}</span> : null}
+                          {displayMode === "actual_forecast" ? (
+                            (h > 0 || ah !== undefined) ? (
+                              <span className="text-gray-600">
+                                {ah !== undefined ? ah : "-"}/{h > 0 ? h : "-"}
+                              </span>
+                            ) : null
+                          ) : (
+                            h > 0 ? <span className="text-gray-600">{h}</span> : null
+                          )}
                         </td>
                       );
                     })}
