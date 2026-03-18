@@ -10,6 +10,7 @@ import {
 } from "./types";
 
 const RECORD_TYPE_FORECAST = "012IS000000x0WqYAI";
+const RECORD_TYPE_ACTUAL = "012IS000000x2B0YAI";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 let connectionCache: any = null;
@@ -125,8 +126,7 @@ export async function fetchDS2Data(): Promise<{
            ManHoursTime__c, ManHoursType__c, WorkType__c, Project__c
     FROM ManHours__c
     WHERE UserName__c IN (${nameCondition})
-      AND RecordTypeId = '${RECORD_TYPE_FORECAST}'
-      AND ForecastAchievement__c = '実績'
+      AND RecordTypeId = '${RECORD_TYPE_ACTUAL}'
       AND CostOccurrenceMonth__c >= ${startStr}
       AND CostOccurrenceMonth__c <= ${endStr}
       AND ManHoursTime__c > 0

@@ -172,7 +172,7 @@ export default function MemberView({ data, months }: MemberViewProps) {
                               total > CAPACITY ? "text-red-600" : total < 140 && total > 0 ? "text-blue-600" : total === 0 ? "text-gray-300" : "text-gray-700"
                             }`}>
                               {displayMode === "actual_forecast"
-                                ? `${actualTotal !== undefined ? actualTotal : "-"}h/${total}h`
+                                ? `${actualTotal !== undefined ? actualTotal : "-"}/${total}h`
                                 : `${total}h`
                               }
                             </span>
