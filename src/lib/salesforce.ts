@@ -225,7 +225,7 @@ export async function fetchDS2Data(): Promise<{
       for (const month of allMonths) {
         const hours = data.months.get(month) || 0;
         const actualHours = data.actualMonths.get(month);
-        monthlyHours.push({ month, hours: Math.round(hours * 10) / 10, actualHours: actualHours !== undefined ? Math.round(actualHours * 10) / 10 : undefined });
+        monthlyHours.push({ month, hours: Math.round(hours), actualHours: actualHours !== undefined ? Math.round(actualHours) : undefined });
       }
       monthlyHours.sort((a, b) => a.month.localeCompare(b.month));
       const projRecord = data.projectId ? projectMap.get(data.projectId) : null;
@@ -287,7 +287,7 @@ export async function fetchDS2Data(): Promise<{
       for (const [type, monthMap] of mData.types) {
         const monthlyHours: MonthlyHour[] = [];
         for (const [month, hours] of monthMap) {
-          monthlyHours.push({ month, hours: Math.round(hours * 10) / 10 });
+          monthlyHours.push({ month, hours: Math.round(hours) });
         }
         monthlyHours.sort((a, b) => a.month.localeCompare(b.month));
         const manHoursType = (type === "本開発" && projName.includes("保守")) ? "保守" : type;
