@@ -1,7 +1,13 @@
 import { NextResponse } from "next/server";
+import { getServerSession } from "next-auth";
 import { fetchDS2Data } from "@/lib/salesforce";
 
 export async function GET() {
+  const session = await getServerSession();
+  if (!session) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
   try {
     const data = await fetchDS2Data();
     return NextResponse.json(data);
