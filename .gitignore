@@ -4,3 +4,4 @@ node_modules/
 token.env
 *.env
 .vercel
+google_client_secret_*.json

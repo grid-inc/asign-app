@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import SessionWrapper from "@/components/SessionWrapper";
 
 export const metadata: Metadata = {
   title: "DS2 アサインダッシュボード",
@@ -13,7 +14,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ja">
-      <body className="bg-gray-50 text-gray-900">{children}</body>
+      <body className="bg-gray-50 text-gray-900">
+        <SessionWrapper>{children}</SessionWrapper>
+      </body>
     </html>
   );
 }
