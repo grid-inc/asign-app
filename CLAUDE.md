@@ -37,11 +37,56 @@ printf 'トークン' | vercel env add SALESFORCE_SECURITY_TOKEN production
 git commit --allow-empty -m "redeploy with updated env vars" && git push
 ```
 
-## Salesforce接続情報
-- 認証情報: `.env.local` に格納（gitignore済み）
-- 変数名: `SALESFORCE_USERNAME`, `SALESFORCE_PASSWORD`, `SALESFORCE_SECURITY_TOKEN`
-- RecordType: 見通し/実績 (012IS000000x0WqYAI)、ForecastAchievement__c = '見通し'
+## Salesforce接続の仕組み
+
+### 認証方式
+jsforce（Node.js用SFクライアントライブラリ）を使い、ユーザー名・パスワード認証でSalesforce REST APIに接続している。
+
+```javascript
+const jsforce = require("jsforce");
+const conn = new jsforce.Connection({ loginUrl: "https://login.salesforce.com" });
+await conn.login("ユーザー名", "パスワード" + "セキュリティトークン");
+
+// ログイン後、SOQLでデータ取得
+const result = await conn.query("SELECT Name FROM Project__c");
+```
+
+### 環境変数
+認証情報は `.env.local` に格納（gitignore済み）:
+- `SALESFORCE_USERNAME` - SFログインメールアドレス
+- `SALESFORCE_PASSWORD` - SFログインパスワード
+- `SALESFORCE_SECURITY_TOKEN` - SFセキュリティトークン（IP制限の代替認証要素）
+
+SFパスワード変更時はセキュリティトークンもリセットされるため、両方の更新が必要。
+
+### データ取得
+- 見通しデータ: RecordType 見通し/実績 (012IS000000x0WqYAI)、ForecastAchievement__c = '見通し'
+- 実績データ: RecordType 実績 (012IS000000x2B0YAI)
 - Phase__c = '0' のプロジェクトは除外
+
+## Google OAuth認証
+
+### 概要
+NextAuth.js + Google OAuthで認証。gridpredict.co.jpドメインのGoogleアカウントのみログイン可能。
+APIルート（`/api/salesforce`）にもセッションチェックがあり、未認証のAPI直接アクセスも拒否される。
+
+### Google Cloud Console設定（設定済み）
+1. https://console.cloud.google.com にアクセス
+2. プロジェクト「asign-app」を選択
+3. 「APIとサービス」→「OAuth同意画面」: 内部アプリとして設定済み
+4. 「認証情報」→ OAuthクライアント:
+   - アプリケーションの種類: ウェブアプリケーション
+   - 承認済みリダイレクトURI: `https://asign-app.vercel.app/api/auth/callback/google`
+
+### 環境変数
+`.env.local` およびVercelに設定:
+- `GOOGLE_CLIENT_ID` - Google OAuthクライアントID
+- `GOOGLE_CLIENT_SECRET` - Google OAuthクライアントシークレット
+- `NEXTAUTH_URL` - `https://asign-app.vercel.app`
+- `NEXTAUTH_SECRET` - セッション暗号化キー
+
+### ドメイン制限
+`src/app/api/auth/[...nextauth]/route.ts` の `signIn` コールバックで `@gridpredict.co.jp` ドメインのみ許可している。
 
 ## URL
 - 本番: https://asign-app.vercel.app
