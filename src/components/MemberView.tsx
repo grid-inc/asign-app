@@ -200,8 +200,8 @@ export default function MemberView({ data, months }: MemberViewProps) {
                           className="inline-block w-2 h-2 rounded-full flex-shrink-0"
                           style={{ backgroundColor: TYPE_COLORS[proj.manHoursType] || "#ccc" }}
                         />
-                        <span className="truncate text-[10px]" title={`${proj.customerName}-${proj.projectName}`}>
-                          {proj.customerName}-{proj.projectName}
+                        <span className="truncate text-[10px]" title={proj.customerName ? `${proj.customerName}-${proj.projectName}` : proj.projectName}>
+                          {proj.customerName ? `${proj.customerName}-` : ""}{proj.projectName}
                         </span>
                       </div>
                     </td>
