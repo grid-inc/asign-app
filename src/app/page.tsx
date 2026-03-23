@@ -35,9 +35,13 @@ export default function Home() {
     }
   }, []);
 
+  const [dataLoaded, setDataLoaded] = useState(false);
+
   useEffect(() => {
-    if (session) fetchData();
-  }, [session, fetchData]);
+    if (session && !dataLoaded) {
+      fetchData().then(() => setDataLoaded(true));
+    }
+  }, [session, dataLoaded, fetchData]);
 
   const months = generateMonths(13);
 
