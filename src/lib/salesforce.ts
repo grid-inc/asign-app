@@ -133,9 +133,12 @@ export async function fetchDS2Data(): Promise<{
     ORDER BY UserName__c, ExportProject__c, CostOccurrenceMonth__c
   `);
 
-  // Collect unique project IDs
+  // Collect unique project IDs (from both forecast and actual records)
   const projectIds = new Set<string>();
   for (const rec of manHoursRecords) {
+    if (rec.Project__c) projectIds.add(rec.Project__c);
+  }
+  for (const rec of actualRecords) {
     if (rec.Project__c) projectIds.add(rec.Project__c);
   }
 
