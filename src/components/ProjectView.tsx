@@ -48,7 +48,7 @@ export default function ProjectView({ projects, months }: ProjectViewProps) {
 
   return (
     <div>
-      <div className="flex items-center gap-2 px-2 py-1.5 bg-gray-50 border-b border-gray-200 text-xs">
+      <div className="flex items-center gap-2 px-2 py-1.5 bg-blue-50/50 border-b border-blue-100 text-xs">
         <label className="flex items-center gap-1 cursor-pointer">
           <input
             type="checkbox"

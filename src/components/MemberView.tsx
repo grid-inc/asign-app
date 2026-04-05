@@ -73,7 +73,7 @@ export default function MemberView({ data, months }: MemberViewProps) {
   return (
     <div>
       {/* Toolbar */}
-      <div className="px-2 py-1 border-b border-gray-200 bg-gray-50 flex items-center gap-2 text-xs">
+      <div className="px-2 py-1 border-b border-blue-100 bg-blue-50/50 flex items-center gap-2 text-xs">
         <button
           onClick={() => setShowFilter(!showFilter)}
           className="px-2 py-0.5 border border-gray-300 rounded hover:bg-gray-100 text-[11px]"
