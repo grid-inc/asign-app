@@ -73,7 +73,7 @@ export default function MemberView({ data, months }: MemberViewProps) {
   return (
     <div style={{ paddingBottom: "100vh" }}>
       {/* Toolbar */}
-      <div className="sticky top-0 z-20 px-2 py-1 border-b border-blue-100 bg-blue-100 flex items-center gap-2 text-xs">
+      <div className="sticky top-0 z-20 px-2 py-1 border-b border-blue-100 bg-blue-50 flex items-center gap-2 text-xs">
         <button
           onClick={() => setShowFilter(!showFilter)}
           className="px-2 py-0.5 border border-gray-300 rounded bg-white hover:bg-gray-50 text-[11px]"
