@@ -73,7 +73,7 @@ export default function MemberView({ data, months }: MemberViewProps) {
   return (
     <div>
       {/* Toolbar */}
-      <div className="px-2 py-1 border-b border-gray-200 bg-white flex items-center gap-2 text-xs">
+      <div className="px-2 py-1 border-b border-gray-200 bg-gray-50 flex items-center gap-2 text-xs">
         <button
           onClick={() => setShowFilter(!showFilter)}
           className="px-2 py-0.5 border border-gray-300 rounded hover:bg-gray-100 text-[11px]"
@@ -119,9 +119,9 @@ export default function MemberView({ data, months }: MemberViewProps) {
       </div>
       <table className="w-full border-collapse text-xs">
         <thead>
-          <tr className="bg-slate-50 text-slate-500 border-b border-gray-200">
-            <th className="sticky left-0 z-10 bg-slate-50 px-2 py-1.5 text-left w-[50px]">TM</th>
-            <th className="sticky left-[50px] z-10 bg-slate-50 px-2 py-1.5 text-left w-[100px]">メンバー</th>
+          <tr className="bg-white text-slate-500 border-b border-gray-200">
+            <th className="sticky left-0 z-10 bg-white px-2 py-1.5 text-left w-[50px]">TM</th>
+            <th className="sticky left-[50px] z-10 bg-white px-2 py-1.5 text-left w-[100px]">メンバー</th>
             {months.map((m) => (
               <th key={m} className="px-1 py-1.5 text-center min-w-[90px]">{fmtMonth(m)}</th>
             ))}
