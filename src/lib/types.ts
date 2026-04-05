@@ -52,5 +52,4 @@ export const DS2_MEMBERS: Record<string, { team: "GL" | "A" | "B" | "C"; nameVar
   "水口 和也": { team: "C", nameVariants: ["水口和也", "水口 和也"] },
   "飯田 英之介": { team: "C", nameVariants: ["飯田英之介", "飯田 英之介"] },
   "藤田 直樹": { team: "C", nameVariants: ["藤田直樹", "藤田 直樹"] },
-  "髙橋 奎太": { team: "B", nameVariants: ["髙橋奎太", "髙橋 奎太", "高橋奎太", "高橋 奎太", "Takahashi Keita"] },
 };
