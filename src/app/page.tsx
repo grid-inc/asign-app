@@ -100,7 +100,6 @@ export default function Home() {
             </div>
           </div>
           <div className="flex items-center gap-3">
-            {!loading && viewMode === "member" && <AlertBadges members={members} months={months} />}
             <button
               onClick={fetchData}
               disabled={loading}
