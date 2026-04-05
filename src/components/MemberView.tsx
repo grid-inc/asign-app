@@ -138,10 +138,10 @@ export default function MemberView({ data, months }: MemberViewProps) {
                   className={`border-b border-gray-200 cursor-pointer hover:bg-blue-50 ${isExpanded ? "bg-blue-50" : ""}`}
                   onClick={() => setExpandedMember(isExpanded ? null : member.memberName)}
                 >
-                  <td className="sticky left-0 z-10 bg-blue-50 px-2 py-1 font-bold text-[10px] border-r border-r-gray-200">
+                  <td className="sticky left-0 z-10 bg-white px-2 py-1 font-bold text-[10px] border-r border-r-gray-200">
                     {member.team}
                   </td>
-                  <td className="sticky left-[50px] z-10 bg-blue-50 px-2 py-1 font-medium border-r border-r-gray-200 whitespace-nowrap">
+                  <td className="sticky left-[50px] z-10 bg-white px-2 py-1 font-medium border-r border-r-gray-200 whitespace-nowrap">
                     <span className="mr-1 text-gray-400">{isExpanded ? "▼" : "▶"}</span>
                     {member.memberName}
                   </td>

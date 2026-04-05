@@ -85,8 +85,8 @@ export default function ProjectView({ projects, months }: ProjectViewProps) {
           <tr className="bg-blue-50 text-slate-500 border-b border-gray-200">
             <th className="sticky left-0 z-40 bg-blue-50 px-2 py-1.5 text-left w-[80px]">顧客</th>
             <th className="sticky left-[80px] z-40 bg-blue-50 px-2 py-1.5 text-left min-w-[260px]">プロジェクト</th>
-            <th className="bg-white px-2 py-1.5 text-left w-[60px]">PM</th>
-            <th className="bg-white px-2 py-1.5 text-center w-[40px]">人数</th>
+            <th className="bg-blue-50 px-2 py-1.5 text-left w-[60px]">PM</th>
+            <th className="bg-blue-50 px-2 py-1.5 text-center w-[40px]">人数</th>
             {months.map((m) => (
               <th key={m} className="bg-blue-50 px-1 py-1.5 text-center min-w-[80px]">{fmtMonth(m)}</th>
             ))}
