@@ -77,7 +77,7 @@ export default function Home() {
       <div className="bg-blue-100 border-b border-blue-200">
         <div className="flex items-center justify-between px-4 py-2">
           <div className="flex items-center gap-4">
-            <h1 className="text-lg font-semibold text-slate-600 tracking-tight">DS2工数ダッシュボード</h1>
+            <h1 className="text-lg font-semibold text-gray-700 tracking-tight">DS2工数ダッシュボード</h1>
 
             {/* View toggle */}
             <div className="flex bg-gray-100 rounded-lg p-0.5 text-sm">
@@ -108,10 +108,10 @@ export default function Home() {
             >
               {loading ? "..." : "更新"}
             </button>
-            <span className="text-xs text-gray-400">{session.user?.name}</span>
+            <span className="text-xs text-gray-600">{session.user?.name}</span>
             <button
               onClick={() => signOut()}
-              className="text-xs text-gray-400 hover:text-gray-600"
+              className="text-xs text-gray-600 hover:text-gray-800"
             >
               ログアウト
             </button>

@@ -16,8 +16,8 @@ export default function Icon() {
           background: "linear-gradient(135deg, #3b82f6, #6366f1)",
           borderRadius: "8px",
           color: "white",
-          fontSize: "13px",
-          fontWeight: 800,
+          fontSize: "15px",
+          fontWeight: 900,
           fontFamily: "sans-serif",
           letterSpacing: "-0.5px",
         }}
