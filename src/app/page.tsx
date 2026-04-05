@@ -74,7 +74,7 @@ export default function Home() {
   return (
     <main className="h-screen flex flex-col overflow-hidden">
       {/* Header - compact */}
-      <div className="bg-blue-50 border-b border-blue-100">
+      <div style={{ background: "linear-gradient(135deg, #dbeafe 0%, #eff6ff 50%, #ffffff 100%)" }} className="border-b border-blue-100">
         <div className="flex items-center justify-between px-4 py-2">
           <div className="flex items-center gap-4">
             <h1 className="text-lg font-semibold text-slate-600 tracking-tight">DS2工数ダッシュボード</h1>
