@@ -77,7 +77,7 @@ export default function Home() {
       <div style={{ background: "linear-gradient(135deg, #f8fafc 0%, #e0e7ff 50%, #ede9fe 100%)" }}>
         <div className="flex items-center justify-between px-4 py-2">
           <div className="flex items-center gap-4">
-            <h1 className="text-lg font-bold text-gray-800">DS2工数ダッシュボード</h1>
+            <h1 className="text-lg font-semibold text-slate-600 tracking-tight">DS2工数ダッシュボード</h1>
             {/* View toggle */}
             <div className="flex bg-gray-100 rounded-lg p-0.5 text-sm">
               <button

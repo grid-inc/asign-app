@@ -119,9 +119,9 @@ export default function MemberView({ data, months }: MemberViewProps) {
       </div>
       <table className="w-full border-collapse text-xs">
         <thead>
-          <tr className="bg-gray-800 text-white">
-            <th className="sticky left-0 z-10 bg-gray-800 px-2 py-1.5 text-left w-[50px]">TM</th>
-            <th className="sticky left-[50px] z-10 bg-gray-800 px-2 py-1.5 text-left w-[100px]">メンバー</th>
+          <tr className="bg-slate-100 text-slate-600">
+            <th className="sticky left-0 z-10 bg-slate-100 px-2 py-1.5 text-left w-[50px]">TM</th>
+            <th className="sticky left-[50px] z-10 bg-slate-100 px-2 py-1.5 text-left w-[100px]">メンバー</th>
             {months.map((m) => (
               <th key={m} className="px-1 py-1.5 text-center min-w-[90px]">{fmtMonth(m)}</th>
             ))}

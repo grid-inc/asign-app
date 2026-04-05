@@ -82,13 +82,13 @@ export default function ProjectView({ projects, months }: ProjectViewProps) {
 
       <table className="w-full border-collapse text-xs" style={{ borderSpacing: 0 }}>
         <thead className="sticky top-0 z-30">
-          <tr className="bg-gray-800 text-white">
-            <th className="sticky left-0 z-40 bg-gray-800 px-2 py-1.5 text-left w-[80px]">顧客</th>
-            <th className="sticky left-[80px] z-40 bg-gray-800 px-2 py-1.5 text-left min-w-[260px]">プロジェクト</th>
-            <th className="bg-gray-800 px-2 py-1.5 text-left w-[60px]">PM</th>
-            <th className="bg-gray-800 px-2 py-1.5 text-center w-[40px]">人数</th>
+          <tr className="bg-slate-100 text-slate-600">
+            <th className="sticky left-0 z-40 bg-slate-100 px-2 py-1.5 text-left w-[80px]">顧客</th>
+            <th className="sticky left-[80px] z-40 bg-slate-100 px-2 py-1.5 text-left min-w-[260px]">プロジェクト</th>
+            <th className="bg-slate-100 px-2 py-1.5 text-left w-[60px]">PM</th>
+            <th className="bg-slate-100 px-2 py-1.5 text-center w-[40px]">人数</th>
             {months.map((m) => (
-              <th key={m} className="bg-gray-800 px-1 py-1.5 text-center min-w-[80px]">{fmtMonth(m)}</th>
+              <th key={m} className="bg-slate-100 px-1 py-1.5 text-center min-w-[80px]">{fmtMonth(m)}</th>
             ))}
           </tr>
         </thead>
