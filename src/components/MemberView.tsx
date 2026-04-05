@@ -71,7 +71,7 @@ export default function MemberView({ data, months }: MemberViewProps) {
   }, [data]);
 
   return (
-    <div>
+    <div className="min-h-[calc(100%+1px)]">
       {/* Toolbar */}
       <div className="sticky top-0 z-20 px-2 py-1 border-b border-blue-100 bg-blue-100/50 flex items-center gap-2 text-xs">
         <button
