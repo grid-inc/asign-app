@@ -13,12 +13,13 @@ export default function Icon() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          background: "linear-gradient(135deg, #3b82f6, #8b5cf6)",
-          borderRadius: "6px",
-          color: "white",
-          fontSize: "11px",
-          fontWeight: 800,
-          letterSpacing: "-0.5px",
+          background: "white",
+          borderRadius: "4px",
+          color: "#3b82f6",
+          fontSize: "12px",
+          fontWeight: 900,
+          letterSpacing: "-1px",
+          border: "2px solid #3b82f6",
         }}
       >
         DS2
