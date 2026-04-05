@@ -57,7 +57,7 @@ export default function Home() {
     return (
       <main className="h-screen flex items-center justify-center bg-gray-100">
         <div className="bg-white p-8 rounded-lg shadow-md w-80 text-center">
-          <h1 className="text-lg font-bold mb-4">DS2アサイン丸わかりマン</h1>
+          <h1 className="text-lg font-bold mb-4">DS2工数ダッシュボード</h1>
           <p className="text-sm text-gray-500 mb-4">gridpredict.co.jpアカウントでログイン</p>
           <button
             onClick={() => signIn("google")}
@@ -76,7 +76,7 @@ export default function Home() {
       {/* Header - compact */}
       <div className="flex items-center justify-between px-4 py-2 bg-white border-b shadow-sm">
         <div className="flex items-center gap-4">
-          <h1 className="text-lg font-bold">DS2アサイン丸わかりマン</h1>
+          <h1 className="text-lg font-bold">DS2工数ダッシュボード</h1>
           {/* View toggle */}
           <div className="flex bg-gray-200 rounded-lg p-0.5 text-sm">
             <button
