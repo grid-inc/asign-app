@@ -48,7 +48,7 @@ export default function ProjectView({ projects, months }: ProjectViewProps) {
 
   return (
     <div>
-      <div className="flex items-center gap-2 px-2 py-1.5 bg-blue-50 border-b border-blue-100 text-xs">
+      <div className="flex items-center gap-2 px-2 py-1.5 bg-blue-100/50 border-b border-blue-100 text-xs">
         <label className="flex items-center gap-1 cursor-pointer">
           <input
             type="checkbox"
@@ -82,13 +82,13 @@ export default function ProjectView({ projects, months }: ProjectViewProps) {
 
       <table className="w-full border-collapse text-xs" style={{ borderSpacing: 0 }}>
         <thead className="sticky top-0 z-30">
-          <tr className="bg-blue-50/70 text-slate-500 border-b border-gray-200">
-            <th className="sticky left-0 z-40 bg-blue-50/70 px-2 py-1.5 text-left w-[80px]">顧客</th>
-            <th className="sticky left-[80px] z-40 bg-blue-50/70 px-2 py-1.5 text-left min-w-[260px]">プロジェクト</th>
+          <tr className="bg-blue-50 text-slate-500 border-b border-gray-200">
+            <th className="sticky left-0 z-40 bg-blue-50 px-2 py-1.5 text-left w-[80px]">顧客</th>
+            <th className="sticky left-[80px] z-40 bg-blue-50 px-2 py-1.5 text-left min-w-[260px]">プロジェクト</th>
             <th className="bg-white px-2 py-1.5 text-left w-[60px]">PM</th>
             <th className="bg-white px-2 py-1.5 text-center w-[40px]">人数</th>
             {months.map((m) => (
-              <th key={m} className="bg-blue-50/70 px-1 py-1.5 text-center min-w-[80px]">{fmtMonth(m)}</th>
+              <th key={m} className="bg-blue-50 px-1 py-1.5 text-center min-w-[80px]">{fmtMonth(m)}</th>
             ))}
           </tr>
         </thead>

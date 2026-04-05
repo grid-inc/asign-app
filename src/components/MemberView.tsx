@@ -73,7 +73,7 @@ export default function MemberView({ data, months }: MemberViewProps) {
   return (
     <div>
       {/* Toolbar */}
-      <div className="px-2 py-1 border-b border-blue-100 bg-blue-50 flex items-center gap-2 text-xs">
+      <div className="px-2 py-1 border-b border-blue-100 bg-blue-100/50 flex items-center gap-2 text-xs">
         <button
           onClick={() => setShowFilter(!showFilter)}
           className="px-2 py-0.5 border border-gray-300 rounded bg-white hover:bg-gray-50 text-[11px]"
@@ -119,9 +119,9 @@ export default function MemberView({ data, months }: MemberViewProps) {
       </div>
       <table className="w-full border-collapse text-xs">
         <thead>
-          <tr className="bg-blue-50/70 text-slate-500 border-b border-blue-100">
-            <th className="sticky left-0 z-10 bg-blue-50/70 px-2 py-1.5 text-left w-[50px]">TM</th>
-            <th className="sticky left-[50px] z-10 bg-blue-50/70 px-2 py-1.5 text-left w-[100px]">メンバー</th>
+          <tr className="bg-blue-50 text-slate-500 border-b border-blue-100">
+            <th className="sticky left-0 z-10 bg-blue-50 px-2 py-1.5 text-left w-[50px]">TM</th>
+            <th className="sticky left-[50px] z-10 bg-blue-50 px-2 py-1.5 text-left w-[100px]">メンバー</th>
             {months.map((m) => (
               <th key={m} className="px-1 py-1.5 text-center min-w-[90px]">{fmtMonth(m)}</th>
             ))}
@@ -138,10 +138,10 @@ export default function MemberView({ data, months }: MemberViewProps) {
                   className={`border-b border-gray-200 cursor-pointer hover:bg-blue-50 ${isExpanded ? "bg-blue-50" : ""}`}
                   onClick={() => setExpandedMember(isExpanded ? null : member.memberName)}
                 >
-                  <td className="sticky left-0 z-10 bg-blue-50/70 px-2 py-1 font-bold text-[10px] border-r border-r-gray-200">
+                  <td className="sticky left-0 z-10 bg-blue-50 px-2 py-1 font-bold text-[10px] border-r border-r-gray-200">
                     {member.team}
                   </td>
-                  <td className="sticky left-[50px] z-10 bg-blue-50/70 px-2 py-1 font-medium border-r border-r-gray-200 whitespace-nowrap">
+                  <td className="sticky left-[50px] z-10 bg-blue-50 px-2 py-1 font-medium border-r border-r-gray-200 whitespace-nowrap">
                     <span className="mr-1 text-gray-400">{isExpanded ? "▼" : "▶"}</span>
                     {member.memberName}
                   </td>
