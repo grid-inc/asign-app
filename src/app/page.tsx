@@ -129,7 +129,7 @@ export default function Home() {
           Salesforceからデータ取得中...
         </div>
       ) : (
-        <div className="flex-1 overflow-auto relative">
+        <div className="flex-1 overflow-scroll relative">
           {viewMode === "member" ? (
             <MemberView data={members} months={months} />
           ) : (
