@@ -48,7 +48,7 @@ export default function ProjectView({ projects, months }: ProjectViewProps) {
 
   return (
     <div>
-      <div className="flex items-center gap-2 px-2 py-1.5 bg-gray-100 border-b text-xs">
+      <div className="flex items-center gap-2 px-2 py-1.5 bg-white border-b border-gray-200 text-xs">
         <label className="flex items-center gap-1 cursor-pointer">
           <input
             type="checkbox"
@@ -82,13 +82,13 @@ export default function ProjectView({ projects, months }: ProjectViewProps) {
 
       <table className="w-full border-collapse text-xs" style={{ borderSpacing: 0 }}>
         <thead className="sticky top-0 z-30">
-          <tr className="bg-slate-100 text-slate-600">
-            <th className="sticky left-0 z-40 bg-slate-100 px-2 py-1.5 text-left w-[80px]">顧客</th>
-            <th className="sticky left-[80px] z-40 bg-slate-100 px-2 py-1.5 text-left min-w-[260px]">プロジェクト</th>
-            <th className="bg-slate-100 px-2 py-1.5 text-left w-[60px]">PM</th>
-            <th className="bg-slate-100 px-2 py-1.5 text-center w-[40px]">人数</th>
+          <tr className="bg-slate-50 text-slate-500 border-b border-gray-200">
+            <th className="sticky left-0 z-40 bg-slate-50 px-2 py-1.5 text-left w-[80px]">顧客</th>
+            <th className="sticky left-[80px] z-40 bg-slate-50 px-2 py-1.5 text-left min-w-[260px]">プロジェクト</th>
+            <th className="bg-slate-50 px-2 py-1.5 text-left w-[60px]">PM</th>
+            <th className="bg-slate-50 px-2 py-1.5 text-center w-[40px]">人数</th>
             {months.map((m) => (
-              <th key={m} className="bg-slate-100 px-1 py-1.5 text-center min-w-[80px]">{fmtMonth(m)}</th>
+              <th key={m} className="bg-slate-50 px-1 py-1.5 text-center min-w-[80px]">{fmtMonth(m)}</th>
             ))}
           </tr>
         </thead>
@@ -138,10 +138,10 @@ export default function ProjectView({ projects, months }: ProjectViewProps) {
                   className={`border-t border-gray-300 cursor-pointer hover:bg-blue-50 ${isExpanded ? "bg-blue-50 font-medium" : ""}`}
                   onClick={() => setExpandedProject(isExpanded ? null : project.projectName)}
                 >
-                  <td className="sticky left-0 z-10 bg-white px-2 py-1.5 border-r truncate text-gray-600" title={project.customerName}>
+                  <td className="sticky left-0 z-10 bg-white px-2 py-1.5 border-r border-r-gray-200 truncate text-gray-600" title={project.customerName}>
                     {project.customerName}
                   </td>
-                  <td className="sticky left-[80px] z-10 bg-white px-2 py-1.5 border-r">
+                  <td className="sticky left-[80px] z-10 bg-white px-2 py-1.5 border-r border-r-gray-200">
                     <div className="flex items-center gap-1">
                       <span className="text-gray-400 w-3">{isExpanded ? "▼" : "▶"}</span>
                       <span
@@ -152,17 +152,17 @@ export default function ProjectView({ projects, months }: ProjectViewProps) {
                       <span className="truncate" title={project.projectName}>{project.projectName}</span>
                     </div>
                   </td>
-                  <td className="px-2 py-1.5 border-r truncate text-gray-600" title={project.pm}>
+                  <td className="px-2 py-1.5 border-r border-r-gray-200 truncate text-gray-600" title={project.pm}>
                     {project.pm ? project.pm.split(" ")[0] : ""}
                   </td>
-                  <td className="px-2 py-1.5 border-r text-center font-bold">
+                  <td className="px-2 py-1.5 border-r border-r-gray-200 text-center font-bold">
                     {uniqueMembers.size}
                   </td>
                   {months.map((month) => {
                     const total = Math.round(monthTotals.get(month) || 0);
                     const typeMap = monthByType.get(month);
                     return (
-                      <td key={month} className="px-1 py-1.5 border-r">
+                      <td key={month} className="px-1 py-1.5 border-r border-r-gray-200">
                         {total > 0 && typeMap ? (
                           <div className="flex flex-col items-center gap-0.5">
                             <div className="w-full h-3 flex rounded overflow-hidden">
@@ -221,8 +221,8 @@ export default function ProjectView({ projects, months }: ProjectViewProps) {
                             key={`${project.projectName}-${name}`}
                             className={`${rowBg} border-b border-gray-100 hover:!bg-blue-50 group`}
                           >
-                            <td className={`sticky left-0 z-10 ${rowBg} group-hover:!bg-blue-50 border-r`} />
-                            <td className={`sticky left-[80px] z-10 ${rowBg} group-hover:!bg-blue-50 px-2 py-0.5 border-r`}>
+                            <td className={`sticky left-0 z-10 ${rowBg} group-hover:!bg-blue-50 border-r border-r-gray-200`} />
+                            <td className={`sticky left-[80px] z-10 ${rowBg} group-hover:!bg-blue-50 px-2 py-0.5 border-r border-r-gray-200`}>
                               <div className="flex items-center gap-1.5 pl-5">
                                 <span className={`text-[9px] px-1 rounded ${TEAM_BADGE[team]}`}>{team}</span>
                                 <span>{name}</span>
@@ -236,8 +236,8 @@ export default function ProjectView({ projects, months }: ProjectViewProps) {
                                 ))}
                               </div>
                             </td>
-                            <td className="border-r" />
-                            <td className="border-r" />
+                            <td className="border-r border-r-gray-200" />
+                            <td className="border-r border-r-gray-200" />
                             {months.map((month) => {
                               // Collect hours by type for this month
                               const hoursByType: { type: string; hours: number }[] = [];
@@ -246,7 +246,7 @@ export default function ProjectView({ projects, months }: ProjectViewProps) {
                                 if (h > 0) hoursByType.push({ type: e.manHoursType, hours: h });
                               });
                               return (
-                                <td key={month} className="px-1 py-0.5 text-center text-[10px] border-r">
+                                <td key={month} className="px-1 py-0.5 text-center text-[10px] border-r border-r-gray-200">
                                   {hoursByType.length > 0 ? (
                                     <div className="flex gap-0.5 justify-center">
                                       {hoursByType.map(({ type, hours }) => (
