@@ -19,6 +19,7 @@ export default function Icon() {
           fontSize: "16px",
           fontWeight: 900,
           letterSpacing: "-1.5px",
+          textShadow: "0 0 1px white, 0 0 1px white",
         }}
       >
         DS2
