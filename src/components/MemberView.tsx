@@ -73,34 +73,34 @@ export default function MemberView({ data, months }: MemberViewProps) {
   return (
     <div>
       {/* Toolbar */}
-      <div className="px-2 py-1 border-b border-gray-700 bg-[#1e293b] text-white flex items-center gap-2 text-xs">
+      <div className="px-2 py-1 border-b bg-white flex items-center gap-2 text-xs">
         <button
           onClick={() => setShowFilter(!showFilter)}
-          className="px-2 py-0.5 border border-white/30 rounded hover:bg-white/10 text-[11px]"
+          className="px-2 py-0.5 border rounded hover:bg-gray-100 text-[11px]"
         >
           メンバー絞込 ({selectedMembers.size}/{data.length})
         </button>
-        <div className="flex bg-white/20 rounded p-0.5 text-[10px]">
+        <div className="flex bg-gray-100 rounded p-0.5 text-[10px]">
           <button
             onClick={() => setDisplayMode("forecast")}
-            className={`px-2 py-0.5 rounded transition ${displayMode === "forecast" ? "bg-white text-[#1e293b] shadow font-medium" : "text-white/70"}`}
+            className={`px-2 py-0.5 rounded transition ${displayMode === "forecast" ? "bg-white shadow font-medium text-blue-600" : "text-gray-500"}`}
           >
             見通し
           </button>
           <button
             onClick={() => setDisplayMode("actual_forecast")}
-            className={`px-2 py-0.5 rounded transition ${displayMode === "actual_forecast" ? "bg-white text-[#1e293b] shadow font-medium" : "text-white/70"}`}
+            className={`px-2 py-0.5 rounded transition ${displayMode === "actual_forecast" ? "bg-white shadow font-medium text-blue-600" : "text-gray-500"}`}
           >
             実績/見通し
           </button>
         </div>
         {showFilter && (
           <div className="flex items-center gap-3 flex-wrap">
-            <button onClick={selectAll} className="text-white/70 hover:text-white hover:underline text-[10px]">全選択</button>
-            <button onClick={deselectAll} className="text-white/70 hover:text-white hover:underline text-[10px]">全解除</button>
+            <button onClick={selectAll} className="text-blue-500 hover:underline text-[10px]">全選択</button>
+            <button onClick={deselectAll} className="text-blue-500 hover:underline text-[10px]">全解除</button>
             {Array.from(membersByTeam.entries()).map(([team, members]) => (
               <span key={team} className="flex items-center gap-1">
-                <span className="text-white/50 font-bold text-[10px]">{team}:</span>
+                <span className="text-gray-500 font-bold text-[10px]">{team}:</span>
                 {members.map(name => (
                   <label key={name} className="flex items-center gap-0.5 cursor-pointer text-[10px]">
                     <input
