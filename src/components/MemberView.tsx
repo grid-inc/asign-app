@@ -73,7 +73,7 @@ export default function MemberView({ data, months }: MemberViewProps) {
   return (
     <div style={{ paddingBottom: "100vh" }}>
       {/* Toolbar */}
-      <div className="sticky top-0 z-20 px-2 py-1 border-b border-blue-100 bg-blue-100/50 flex items-center gap-2 text-xs">
+      <div className="sticky top-0 z-20 px-2 py-1 border-b border-blue-100 bg-blue-100 flex items-center gap-2 text-xs">
         <button
           onClick={() => setShowFilter(!showFilter)}
           className="px-2 py-0.5 border border-gray-300 rounded bg-white hover:bg-gray-50 text-[11px]"
@@ -119,7 +119,7 @@ export default function MemberView({ data, months }: MemberViewProps) {
       </div>
       <table className="w-full border-collapse text-xs">
         <thead className="sticky top-[29px] z-20">
-          <tr className="bg-blue-50 text-slate-500 border-b border-blue-100">
+          <tr className="bg-blue-50 text-slate-500 border-y border-gray-200">
             <th className="sticky left-0 z-30 bg-blue-50 px-2 py-1.5 text-left w-[50px]">TM</th>
             <th className="sticky left-[50px] z-30 bg-blue-50 px-2 py-1.5 text-left w-[100px]">メンバー</th>
             {months.map((m) => (
