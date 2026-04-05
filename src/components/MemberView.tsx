@@ -76,7 +76,7 @@ export default function MemberView({ data, months }: MemberViewProps) {
       <div className="px-2 py-1 border-b border-gray-200 bg-white flex items-center gap-2 text-xs">
         <button
           onClick={() => setShowFilter(!showFilter)}
-          className="px-2 py-0.5 border rounded hover:bg-gray-100 text-[11px]"
+          className="px-2 py-0.5 border border-gray-300 rounded hover:bg-gray-100 text-[11px]"
         >
           メンバー絞込 ({selectedMembers.size}/{data.length})
         </button>

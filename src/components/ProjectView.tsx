@@ -62,7 +62,7 @@ export default function ProjectView({ projects, months }: ProjectViewProps) {
         <select
           value={selectedDomain}
           onChange={(e) => setSelectedDomain(e.target.value)}
-          className="border rounded px-1.5 py-0.5 bg-white text-xs"
+          className="border border-gray-300 rounded px-1.5 py-0.5 bg-white text-xs"
         >
           <option value="all">全ドメイン</option>
           {domains.map((d) => (
