@@ -26,7 +26,7 @@ export default function MemberView({ data, months, currentMonth }: MemberViewPro
   const [selectedMembers, setSelectedMembers] = useState<Set<string>>(new Set(data.map(m => m.memberName)));
   const [showFilter, setShowFilter] = useState(false);
   const [displayMode, setDisplayMode] = useState<DisplayMode>("forecast");
-  const [showPastMonths, setShowPastMonths] = useState(true);
+  const [showPastMonths, setShowPastMonths] = useState(false);
 
   const isPastMonth = (month: string) => month < currentMonth;
   const visibleMonths = showPastMonths ? months : months.filter(m => !isPastMonth(m));
@@ -163,7 +163,7 @@ export default function MemberView({ data, months, currentMonth }: MemberViewPro
                     const past = isPastMonth(month);
                     return (
                       <td key={month} className={`px-1 py-1 border-r border-r-gray-200 ${past ? "bg-gray-50" : ""}`}>
-                        {total > 0 ? (
+                        {(total > 0 || (actualTotal !== undefined && actualTotal > 0)) ? (
                           <div className="flex flex-col items-center gap-0.5">
                             {/* Stacked bar */}
                             <div className="w-full h-4 flex rounded overflow-hidden bg-gray-100">
@@ -181,11 +181,11 @@ export default function MemberView({ data, months, currentMonth }: MemberViewPro
                               })}
                             </div>
                             <span className={`text-[10px] font-bold ${
-                              total > CAPACITY ? "text-red-600" : total < 140 && total > 0 ? "text-blue-600" : total === 0 ? "text-gray-300" : "text-gray-700"
+                              total > CAPACITY ? "text-red-600" : total < 140 && total > 0 ? "text-blue-600" : total === 0 ? "text-gray-400" : "text-gray-700"
                             }`}>
                               {displayMode === "actual_forecast"
-                                ? `${actualTotal !== undefined ? actualTotal : "-"}/${total}h`
-                                : `${total}h`
+                                ? `${actualTotal !== undefined ? actualTotal : "-"}/${total > 0 ? total + "h" : "-"}`
+                                : total > 0 ? `${total}h` : (actualTotal !== undefined ? `${actualTotal}h` : "-")
                               }
                             </span>
                           </div>
