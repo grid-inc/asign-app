@@ -77,7 +77,7 @@ async function queryAll(conn: any, soql: string): Promise<any[]> {
 
 function getDateRange() {
   const now = new Date();
-  const startDate = new Date(now.getFullYear(), now.getMonth(), 1);
+  const startDate = new Date(now.getFullYear(), now.getMonth() - 3, 1);
   const endDate = new Date(now.getFullYear(), now.getMonth() + 13, 0);
   return {
     startStr: startDate.toISOString().split("T")[0],

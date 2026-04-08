@@ -43,7 +43,7 @@ export default function Home() {
     }
   }, [session, dataLoaded, fetchData]);
 
-  const months = generateMonths(13);
+  const months = generateMonths(3, 13);
 
   if (status === "loading") {
     return (
@@ -131,7 +131,7 @@ export default function Home() {
       ) : (
         <div className="flex-1 h-0 overflow-auto relative">
           {viewMode === "member" ? (
-            <MemberView data={members} months={months} />
+            <MemberView data={members} months={months} currentMonth={getCurrentMonth()} />
           ) : (
             <ProjectView projects={projects} months={months} />
           )}
@@ -173,10 +173,15 @@ function AlertBadges({ members, months }: { members: MemberAssignment[]; months:
   );
 }
 
-function generateMonths(count: number): string[] {
+function generateMonths(pastCount: number, futureCount: number): string[] {
   const now = new Date();
-  return Array.from({ length: count }, (_, i) => {
-    const d = new Date(now.getFullYear(), now.getMonth() + i, 1);
+  return Array.from({ length: pastCount + futureCount }, (_, i) => {
+    const d = new Date(now.getFullYear(), now.getMonth() - pastCount + i, 1);
     return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
   });
+}
+
+function getCurrentMonth(): string {
+  const now = new Date();
+  return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
 }

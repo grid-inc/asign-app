@@ -18,13 +18,18 @@ type DisplayMode = "forecast" | "actual_forecast";
 interface MemberViewProps {
   data: MemberAssignment[];
   months: string[];
+  currentMonth: string;
 }
 
-export default function MemberView({ data, months }: MemberViewProps) {
+export default function MemberView({ data, months, currentMonth }: MemberViewProps) {
   const [expandedMember, setExpandedMember] = useState<string | null>(null);
   const [selectedMembers, setSelectedMembers] = useState<Set<string>>(new Set(data.map(m => m.memberName)));
   const [showFilter, setShowFilter] = useState(false);
   const [displayMode, setDisplayMode] = useState<DisplayMode>("forecast");
+  const [showPastMonths, setShowPastMonths] = useState(true);
+
+  const isPastMonth = (month: string) => month < currentMonth;
+  const visibleMonths = showPastMonths ? months : months.filter(m => !isPastMonth(m));
 
   const toggleMember = (name: string) => {
     setSelectedMembers(prev => {
@@ -94,6 +99,12 @@ export default function MemberView({ data, months }: MemberViewProps) {
             実績/見通し
           </button>
         </div>
+        <button
+          onClick={() => setShowPastMonths(!showPastMonths)}
+          className={`px-2 py-0.5 border border-gray-300 rounded bg-white hover:bg-gray-50 text-[11px] ${showPastMonths ? "text-blue-600 font-medium" : "text-gray-500"}`}
+        >
+          過去月{showPastMonths ? "非表示" : "表示"}
+        </button>
         {showFilter && (
           <div className="flex items-center gap-3 flex-wrap">
             <button onClick={selectAll} className="text-blue-500 hover:underline text-[10px]">全選択</button>
@@ -122,8 +133,8 @@ export default function MemberView({ data, months }: MemberViewProps) {
           <tr className="bg-blue-50 text-slate-500 border-y border-gray-200">
             <th className="sticky left-0 z-30 bg-blue-50 px-2 py-1.5 text-left w-[50px]">TM</th>
             <th className="sticky left-[50px] z-30 bg-blue-50 px-2 py-1.5 text-left w-[100px]">メンバー</th>
-            {months.map((m) => (
-              <th key={m} className="bg-blue-50 px-1 py-1.5 text-center min-w-[90px]">{fmtMonth(m)}</th>
+            {visibleMonths.map((m) => (
+              <th key={m} className={`px-1 py-1.5 text-center min-w-[90px] ${isPastMonth(m) ? "bg-gray-100 text-gray-400" : "bg-blue-50"}`}>{fmtMonth(m)}</th>
             ))}
           </tr>
         </thead>
@@ -145,12 +156,13 @@ export default function MemberView({ data, months }: MemberViewProps) {
                     <span className="mr-1 text-gray-400">{isExpanded ? "▼" : "▶"}</span>
                     {member.memberName}
                   </td>
-                  {months.map((month) => {
+                  {visibleMonths.map((month) => {
                     const total = Math.round(monthTotals.get(month) || 0);
                     const actualTotal = monthActualTotals.has(month) ? Math.round(monthActualTotals.get(month)!) : undefined;
                     const typeBreakdown = monthByType.get(month) || new Map();
+                    const past = isPastMonth(month);
                     return (
-                      <td key={month} className="px-1 py-1 border-r border-r-gray-200">
+                      <td key={month} className={`px-1 py-1 border-r border-r-gray-200 ${past ? "bg-gray-50" : ""}`}>
                         {total > 0 ? (
                           <div className="flex flex-col items-center gap-0.5">
                             {/* Stacked bar */}
@@ -205,12 +217,13 @@ export default function MemberView({ data, months }: MemberViewProps) {
                         </span>
                       </div>
                     </td>
-                    {months.map((month) => {
+                    {visibleMonths.map((month) => {
                       const mh = proj.monthlyHours.find((mh) => mh.month === month);
                       const h = mh?.hours || 0;
                       const ah = mh?.actualHours;
+                      const past = isPastMonth(month);
                       return (
-                        <td key={month} className="px-1 py-0.5 text-center text-[10px] border-r border-r-gray-200">
+                        <td key={month} className={`px-1 py-0.5 text-center text-[10px] border-r border-r-gray-200 ${past ? "bg-gray-50" : ""}`}>
                           {displayMode === "actual_forecast" ? (
                             (h > 0 || ah !== undefined) ? (
                               <span className="text-gray-600">
