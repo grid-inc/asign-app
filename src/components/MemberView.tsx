@@ -29,7 +29,8 @@ export default function MemberView({ data, months, currentMonth }: MemberViewPro
   const [showPastMonths, setShowPastMonths] = useState(false);
 
   const isPastMonth = (month: string) => month < currentMonth;
-  const visibleMonths = showPastMonths ? months : months.filter(m => !isPastMonth(m));
+  const hidePast = displayMode === "forecast" || !showPastMonths;
+  const visibleMonths = hidePast ? months.filter(m => !isPastMonth(m)) : months;
 
   const toggleMember = (name: string) => {
     setSelectedMembers(prev => {
@@ -99,12 +100,14 @@ export default function MemberView({ data, months, currentMonth }: MemberViewPro
             実績/見通し
           </button>
         </div>
-        <button
-          onClick={() => setShowPastMonths(!showPastMonths)}
-          className={`px-2 py-0.5 border border-gray-300 rounded bg-white hover:bg-gray-50 text-[11px] ${showPastMonths ? "text-blue-600 font-medium" : "text-gray-500"}`}
-        >
-          過去月{showPastMonths ? "非表示" : "表示"}
-        </button>
+        {displayMode === "actual_forecast" && (
+          <button
+            onClick={() => setShowPastMonths(!showPastMonths)}
+            className={`px-2 py-0.5 border border-gray-300 rounded bg-white hover:bg-gray-50 text-[11px] ${showPastMonths ? "text-blue-600 font-medium" : "text-gray-500"}`}
+          >
+            過去月{showPastMonths ? "非表示" : "表示"}
+          </button>
+        )}
         {showFilter && (
           <div className="flex items-center gap-3 flex-wrap">
             <button onClick={selectAll} className="text-blue-500 hover:underline text-[10px]">全選択</button>
@@ -198,7 +201,12 @@ export default function MemberView({ data, months, currentMonth }: MemberViewPro
                 </tr>
 
                 {/* Expanded detail rows */}
-                {isExpanded && member.projects.map((proj, projIdx) => {
+                {isExpanded && member.projects.filter((proj) => {
+                  if (displayMode === "forecast") {
+                    return proj.monthlyHours.some(mh => !isPastMonth(mh.month) && mh.hours > 0);
+                  }
+                  return true;
+                }).map((proj, projIdx) => {
                   const rowBg = projIdx % 2 === 0 ? "bg-gray-50" : "bg-white";
                   return (
                   <tr
