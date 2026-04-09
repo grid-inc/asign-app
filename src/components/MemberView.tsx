@@ -165,7 +165,7 @@ export default function MemberView({ data, months, currentMonth }: MemberViewPro
                     const typeBreakdown = monthByType.get(month) || new Map();
                     const past = isPastMonth(month);
                     return (
-                      <td key={month} className={`px-1 py-1 border-r border-r-gray-200 ${past ? "bg-gray-50" : ""}`}>
+                      <td key={month} className={`px-1 py-1 border-r border-r-gray-200 ${past ? "bg-gray-50 hover:bg-blue-50" : ""}`}>
                         {(total > 0 || (actualTotal !== undefined && actualTotal > 0)) ? (
                           <div className="flex flex-col items-center gap-0.5">
                             {/* Stacked bar */}
@@ -231,7 +231,7 @@ export default function MemberView({ data, months, currentMonth }: MemberViewPro
                       const ah = mh?.actualHours;
                       const past = isPastMonth(month);
                       return (
-                        <td key={month} className={`px-1 py-0.5 text-center text-[10px] border-r border-r-gray-200 ${past ? "bg-gray-50" : ""}`}>
+                        <td key={month} className={`px-1 py-0.5 text-center text-[10px] border-r border-r-gray-200 ${past ? "bg-gray-50 group-hover:!bg-blue-50" : ""}`}>
                           {displayMode === "actual_forecast" ? (
                             (h > 0 || ah !== undefined) ? (
                               <span className="text-gray-600">
